@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import cheerio from 'cheerio';
 import got from 'got';
 import path from 'path';
