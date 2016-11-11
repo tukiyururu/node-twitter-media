@@ -1,23 +1,25 @@
+"use strict";
+
 module.exports = {
-    entry: ['babel-polyfill', './src/main.js'],
+    entry: ["babel-polyfill", "./src/main.js"],
     output: {
-        path: __dirname + '/dist',
-        filename: 'main.js',
-        libraryTarget: 'commonjs'
+        path: __dirname + "/dist",
+        filename: "main.js",
+        libraryTarget: "commonjs"
     },
-    target: 'node',
+    target: "node",
     resolve: {
-        extensions: ['', '.js']
+        extensions: ["", ".js"]
     },
     module: {
         loaders: [{
             test: /\.json$/,
-            loader: 'json'
+            loader: "json"
         },
         {
             test: /\.js$/,
             exclude: /node_modules/,
-            loader: 'babel'
+            loader: "babel"
         }]
     }
 };

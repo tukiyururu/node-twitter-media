@@ -1,9 +1,9 @@
-import 'babel-polyfill';
-import cheerio from 'cheerio';
-import got from 'got';
-import path from 'path';
-import fs from 'fs-extra';
-import BigNumber from 'bignumber.js';
+import "babel-polyfill";
+import cheerio from "cheerio";
+import got from "got";
+import path from "path";
+import fs from "fs-extra";
+import BigNumber from "bignumber.js";
 
 const name = process.argv[2];
 const dir = `image/${name}`;
@@ -15,29 +15,26 @@ const wait = () => {
     });
 };
 
-const req = (url, opt) => {
+const req = async (url, opt) => {
     opt.headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko'
+        "user-agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
     };
-
-    return got(url, opt)
-    .then(res => res.body);
+    const res = await got(url, opt);
+    return res.body;
 };
 
-const save = url => {
-    return req(`${url}:orig`, { encoding: null })
-    .then(data => {
-        const file = `${dir}/${path.basename(url)}`;
-        fs.writeFileSync(file, data, 'binary');
-    });
+const save = async url => {
+    const data = await req(`${url}:orig`, { encoding: null })
+    const file = `${dir}/${path.basename(url)}`;
+    fs.writeFileSync(file, data, "binary");
 };
 
 const getMedia = html => {
     const $ = cheerio.load(html);
 
     return Promise.all(
-        $('.AdaptiveMedia-photoContainer').map((i, el) => {
-            const imgUrl = $(el).data('image-url');
+        $(".AdaptiveMedia-photoContainer").map((i, el) => {
+            const imgUrl = $(el).data("image-url");
             return save(imgUrl);
         }).get()
     );
@@ -45,7 +42,7 @@ const getMedia = html => {
 
 const getParam = html => {
     const $ = cheerio.load(html);
-    const cxtId = $('.tweet').eq(-1).data('tweet-id');
+    const cxtId = $(".tweet").last().data("tweet-id");
     const big = new BigNumber(cxtId);
     const maxId = big.minus(1).toFixed(0);
 
@@ -66,4 +63,4 @@ const twitterMedia = async param => {
     }
 };
 
-twitterMedia('');
+twitterMedia("");

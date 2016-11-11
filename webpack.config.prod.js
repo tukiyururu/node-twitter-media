@@ -1,5 +1,7 @@
-var webpack = require('webpack');
-var config = require('./webpack.config');
+"use strict";
+
+var webpack = require("webpack");
+var config = require("./webpack.config");
 
 config.plugins = [
     new webpack.optimize.OccurrenceOrderPlugin(),
